@@ -1,0 +1,36 @@
+{
+    "name": "captainhook/plugin",
+    "description": "Composer-Plugin handling your git-hooks",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Heigl",
+            "email": "andreas@heigl.org"
+        }
+    ],
+    "require": {
+        "php" : "^7.1",
+      "composer-plugin-api": "^1.1",
+        "sebastianfeldmann/captainhook" : "*"
+    },
+  "require-dev" : {
+    "composer/composer" : "*"
+  },
+  "extra": {
+    "class": "My\\Plugin"
+  },
+  "config" :{
+    "sort-packages" : true
+  },
+  "autoload" : {
+    "psr-4": {
+      "CaptainHook\\Plugin\\Composer\\" : "src"
+    }
+  },
+  "autoload-dev" : {
+    "psr-4": {
+      "CaptainHook\\PluginTest\\Composer\\": "tests"
+    }
+  }
+}
