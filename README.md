@@ -1,6 +1,13 @@
-# Composer-Plugin for [CaptainHook]()
+# Composer-Plugin for [CaptainHook](https://github.com/sebastianfeldmann/captainhook)
+
+This is a composer-plugin that installs CaptainHook. For more information visit it's Website.
 
 ## Installation:
 
-This is a composer-plugin. So the best thing is to install it using `composer require captainhook/plugin-composer` and 
-everything else will happen automatically
+As this is a composer-plugin the prefered method is to use composer for installation.
+ 
+```bash
+$ composer require captainhook/plugin-composer`
+```
+
+Everything else will happen automagically.
