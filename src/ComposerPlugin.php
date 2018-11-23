@@ -11,12 +11,13 @@ declare(strict_types=1);
 namespace CaptainHook\Plugin\Composer;
 
 use Composer\Composer;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginInterface;
-use Composer\Plugin\PluginEvents;
+use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 
-class ComposerPlugin implements PluginInterface
+class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
     /** @var Installer */
     private $installer;
@@ -29,19 +30,12 @@ class ComposerPlugin implements PluginInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            PluginEvents::COMMAND => 'runAtCommandRun',
-        ];
+            ScriptEvents::POST_AUTOLOAD_DUMP => 'runPostInstallScript'
+         ];
     }
 
-    public function runAtCommandRun(CommandEvent $event) : void
+    public function runPostInstallScript(Event $event) : void
     {
-        if (! in_array($event->getCommandName(), [
-            'install',
-            'update',
-        ])) {
-            return;
-        }
-
         ($this->installer)();
     }
 }

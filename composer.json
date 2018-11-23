@@ -11,14 +11,14 @@
     ],
     "require": {
         "php" : "^7.1",
-      "composer-plugin-api": "^1.1",
+        "composer-plugin-api": "^1.1",
         "sebastianfeldmann/captainhook" : "*"
     },
   "require-dev" : {
     "composer/composer" : "*"
   },
   "extra": {
-    "class": "My\\Plugin"
+    "class": "CaptainHook\\Plugin\\Composer\\ComposerPlugin"
   },
   "config" :{
     "sort-packages" : true
