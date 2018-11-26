@@ -14,10 +14,10 @@ namespace CaptainHook\Plugin\Composer;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use function file_exists;
-use SebastianFeldmann\CaptainHook\Composer\Application;
-use SebastianFeldmann\CaptainHook\Config\Factory;
-use SebastianFeldmann\CaptainHook\Console\Command\Install;
-use SebastianFeldmann\CaptainHook\Storage\File\Json;
+use CaptainHook\App\Composer\Application;
+use CaptainHook\App\Config\Factory;
+use CaptainHook\App\Console\Command\Install;
+use CaptainHook\App\Storage\File\Json;
 use SplFileInfo;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -34,8 +34,6 @@ class Installer
     }
 
     /**
-     * @param string $config
-     *
      * @throws \Exception
      */
     public function __invoke() : void
@@ -54,9 +52,7 @@ class Installer
     /**
      * Create a CaptainHook Composer application.
      *
-     * @param  string                 $config
-     *
-     * @return \SebastianFeldmann\CaptainHook\Composer\Application
+     * @return \CaptainHook\App\Composer\Application
      */
     private function createApplication() : Application
     {
@@ -68,6 +64,11 @@ class Installer
         return $app;
     }
 
+    /**
+     * Return the configured captainhook config file empty string if not set.
+     *
+     * @return string
+     */
     private function getConfigFile() : string
     {
         $extra = $this->config->get('extra');
@@ -78,6 +79,11 @@ class Installer
         return $extra['captainhookconfigfolder'];
     }
 
+    /**
+     * Make sure the config file exists on disk.
+     *
+     * @param \SplFileInfo $configFile
+     */
     private function assertConfigFile(SplFileInfo $configFile) : void
     {
         if ($configFile->isFile()) {
