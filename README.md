@@ -1,6 +1,6 @@
 # Composer-Plugin for [CaptainHook](https://github.com/captainhookphp/captainhook)
 
-This is a composer-plugin that installs CaptainHook. For more information visit it's [Website](https://github.com/captainhookphp/captainhook).
+This is a composer-plugin that installs CaptainHook. For more information visit its [Website](https://github.com/captainhookphp/captainhook).
 
 ## Installation:
 
