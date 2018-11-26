@@ -1,10 +1,10 @@
-# Composer-Plugin for [CaptainHook](https://github.com/sebastianfeldmann/captainhook)
+# Composer-Plugin for [CaptainHook](https://github.com/captainhookphp/captainhook)
 
-This is a composer-plugin that installs CaptainHook. For more information visit it's Website.
+This is a composer-plugin that installs CaptainHook. For more information visit it's [Website](https://github.com/captainhookphp/captainhook).
 
 ## Installation:
 
-As this is a composer-plugin the prefered method is to use composer for installation.
+As this is a composer-plugin the preferred method is to use composer for installation.
  
 ```bash
 $ composer require captainhook/plugin-composer`
@@ -14,7 +14,7 @@ Everything else will happen automagically.
 
 ## Setup
 
-The plugin will install CaptaionHook and make sure the git-hoks are installed. The configuration though is still 
+The plugin will install CaptainHook and make sure the git-hooks are installed. The configuration though is still 
 done using CaptainHook.
 
 So after first installation you should run `vendor/bin/captainhook  configure -e` and then commit the file 
