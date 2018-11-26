@@ -1,5 +1,5 @@
 {
-    "name": "captainhook/plugin",
+    "name": "captainhook/plugin-composer",
     "description": "Composer-Plugin handling your git-hooks",
     "type": "composer-plugin",
     "license": "MIT",
