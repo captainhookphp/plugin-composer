@@ -7,7 +7,7 @@ This is a composer-plugin that installs CaptainHook. For more information visit 
 As this is a composer-plugin the preferred method is to use composer for installation.
  
 ```bash
-$ composer require captainhook/plugin-composer`
+$ composer require --dev captainhook/plugin-composer`
 ```
 
 Everything else will happen automagically.
