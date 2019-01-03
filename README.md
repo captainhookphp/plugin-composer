@@ -12,7 +12,7 @@ This is a composer-plugin that installs CaptainHook and the corresponding git ho
 As this is a composer-plugin the preferred method is to use composer for installation.
  
 ```bash
-$ composer require --dev captainhook/plugin-composer`
+$ composer require --dev captainhook/plugin-composer
 ```
 
 Everything else will happen automagically.
