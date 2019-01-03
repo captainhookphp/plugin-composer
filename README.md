@@ -1,6 +1,11 @@
 # Composer-Plugin for [CaptainHook](https://github.com/captainhookphp/captainhook)
 
-This is a composer-plugin that installs CaptainHook. For more information visit its [Website](https://github.com/captainhookphp/captainhook).
+This is a composer-plugin that installs CaptainHook and the corresponding git hooks. For more information visit its [Website](https://github.com/captainhookphp/captainhook).
+
+[![Latest Stable Version](https://poser.pugx.org/captainhook/plugin-composer/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/plugin-composer)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
+[![Downloads](https://img.shields.io/packagist/dt/captainhook/plugin-composer.svg?v1)](https://packagist.org/packages/captainhook/plugin-composer)
+[![License](https://poser.pugx.org/captainhook/plugin-composer/license.svg?v=1)](https://packagist.org/packages/captainhook/plugin-composer)
 
 ## Installation:
 
