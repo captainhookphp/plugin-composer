@@ -108,7 +108,7 @@ class Installer
     private function assertConfigFile(SplFileInfo $configFile) : void
     {
         if ($configFile->isFile()) {
-            $this->io->write('Using CaptainHook config: ' . $configFile->getFilename());
+            $this->io->write('  <info>Using CaptainHook config: ' . $configFile->getFilename() . '</info>');
             return;
         }
 
