@@ -1,39 +1,43 @@
 {
-    "name": "captainhook/plugin-composer",
-    "description": "Composer-Plugin handling your git-hooks",
-    "type": "composer-plugin",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Andreas Heigl",
-            "email": "andreas@heigl.org"
-        }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "php" : "^7.1",
-        "composer-plugin-api": "^1.1",
-        "captainhook/captainhook" : "^4.0"
+  "name": "captainhook/plugin-composer",
+  "description": "Composer-Plugin handling your git-hooks",
+  "type": "composer-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andreas Heigl",
+      "email": "andreas@heigl.org"
     },
-  "require-dev" : {
-    "composer/composer" : "*"
+    {
+      "name": "Sebastian Feldmann",
+      "email": "sf@sebastian-feldmann.info"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^7.1",
+    "composer-plugin-api": "^1.1",
+    "captainhook/captainhook": "^4.0"
+  },
+  "require-dev": {
+    "composer/composer": "*"
   },
   "extra": {
     "class": "CaptainHook\\Plugin\\Composer\\ComposerPlugin",
     "branch-alias": {
-      "dev-master": "4.0.x-dev"
+      "dev-fluffy_hedgehog": "4.0.x-dev"
     }
   },
-  "config" :{
-    "sort-packages" : true
+  "config": {
+    "sort-packages": true
   },
-  "autoload" : {
+  "autoload": {
     "psr-4": {
-      "CaptainHook\\Plugin\\Composer\\" : "src"
+      "CaptainHook\\Plugin\\Composer\\": "src"
     }
   },
-  "autoload-dev" : {
+  "autoload-dev": {
     "psr-4": {
       "CaptainHook\\PluginTest\\Composer\\": "tests"
     }
