@@ -35,12 +35,13 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Activate the plugin by setting up the installer
      *
-     * @param \Composer\Composer       $composer
-     * @param \Composer\IO\IOInterface $io
+     * @param  \Composer\Composer       $composer
+     * @param  \Composer\IO\IOInterface $io
+     * @return void
      */
     public function activate(Composer $composer, IOInterface $io) : void
     {
-        $this->installer = new Installer($io, $composer->getConfig());
+        $this->installer = new Installer($io, $composer->getPackage());
     }
 
     /**
@@ -58,7 +59,8 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Run the installer
      *
-     * @param \Composer\Script\Event $event
+     * @param  \Composer\Script\Event $event
+     * @return void
      */
     public function runPostInstallScript(Event $event) : void
     {

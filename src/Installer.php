@@ -11,8 +11,9 @@ declare(strict_types=1);
 
 namespace CaptainHook\Plugin\Composer;
 
-use Composer\Config;
+use CaptainHook\App\CH;
 use Composer\IO\IOInterface;
+use Composer\Package\Package;
 use function file_exists;
 use CaptainHook\App\Composer\Application;
 use CaptainHook\App\Config\Factory;
@@ -36,20 +37,20 @@ class Installer
     private $io;
 
     /**
-     * @var \Composer\Config
+     * @var \Composer\Package\Package
      */
-    private $config;
+    private $package;
 
     /**
      * Installer constructor
      *
-     * @param \Composer\IO\IOInterface $io
-     * @param \Composer\Config         $config
+     * @param \Composer\IO\IOInterface  $io
+     * @param \Composer\Package\Package $package
      */
-    public function __construct(IOInterface $io, Config $config)
+    public function __construct(IOInterface $io, Package $package)
     {
-        $this->io     = $io;
-        $this->config = $config;
+        $this->io      = $io;
+        $this->package = $package;
     }
 
     /**
@@ -58,11 +59,11 @@ class Installer
     public function __invoke() : void
     {
         $app     = $this->createApplication();
+        $config  = $app->getConfigFile();
         $install = new Install();
         $install->setIO($app->getIO());
 
-        $this->assertConfigFile(new SplFileInfo($app->getConfigFile()));
-        $this->io->write(file_exists($app->getConfigFile())?'true':'false');
+        $this->assertConfigFile(new SplFileInfo($config));
         $input = new ArrayInput(['command' => 'install', '--configuration' => $app->getConfigFile(), '-f' => '-f']);
         $app->add($install);
         $app->run($input);
@@ -90,12 +91,12 @@ class Installer
      */
     private function getConfigFile() : string
     {
-        $extra = $this->config->get('extra');
-        if ($extra === null || ! isset($extra['captainhookconfigfolder'])) {
+        $extra = $this->package->getExtra();
+        if ($extra === null || ! isset($extra[CH::CONFIG_COMPOSER])) {
             return '';
         }
 
-        return $extra['captainhookconfigfolder'];
+        return $extra[CH::CONFIG_COMPOSER];
     }
 
     /**
@@ -110,7 +111,9 @@ class Installer
             return;
         }
 
+        $this->io->write('Creating dummy CaptainHook config file');
+
         $file = new Json($configFile->getPathname());
-        $file->write(Factory::create($configFile->getPath()));
+        $file->write(Factory::create($configFile->getPathname())->getJsonData());
     }
 }

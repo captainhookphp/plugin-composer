@@ -9,16 +9,21 @@
             "email": "andreas@heigl.org"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php" : "^7.1",
         "composer-plugin-api": "^1.1",
-        "captainhook/captainhook" : "^3.0"
+        "captainhook/captainhook" : "^4.0"
     },
   "require-dev" : {
     "composer/composer" : "*"
   },
   "extra": {
-    "class": "CaptainHook\\Plugin\\Composer\\ComposerPlugin"
+    "class": "CaptainHook\\Plugin\\Composer\\ComposerPlugin",
+    "branch-alias": {
+      "dev-master": "4.0.x-dev"
+    }
   },
   "config" :{
     "sort-packages" : true
