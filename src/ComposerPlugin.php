@@ -52,7 +52,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            ScriptEvents::POST_AUTOLOAD_DUMP => 'runPostInstallScript'
+            ScriptEvents::POST_AUTOLOAD_DUMP => 'installHooks'
          ];
     }
 
@@ -62,7 +62,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      * @param  \Composer\Script\Event $event
      * @return void
      */
-    public function runPostInstallScript(Event $event) : void
+    public function installHooks(Event $event) : void
     {
         $event->getIO()->write('CaptainHook Composer Plugin');
         if (!$this->isCaptainHookInstalled()) {
