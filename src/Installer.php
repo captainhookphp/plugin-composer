@@ -14,7 +14,6 @@ namespace CaptainHook\Plugin\Composer;
 use CaptainHook\App\CH;
 use Composer\IO\IOInterface;
 use Composer\Package\Package;
-use function file_exists;
 use CaptainHook\App\Composer\Application;
 use CaptainHook\App\Config\Factory;
 use CaptainHook\App\Console\Command\Install;
@@ -112,7 +111,7 @@ class Installer
             return;
         }
 
-        $this->io->write('Creating dummy CaptainHook config file');
+        $this->io->write('  <info>Creating CaptainHook config: ' . $configFile->getFilename() . '</info>');
 
         $file = new Json($configFile->getPathname());
         $file->write(Factory::create($configFile->getPathname())->getJsonData());
