@@ -72,7 +72,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
         // if it's still not available end the plugin execution
         if (!$this->isCaptainHookInstalled()) {
-            $event->getIO()->write('  <info>CaptainHook not properly installed try to run composer update</info>');
+            $event->getIO()->write('CaptainHook not properly installed try to run composer update');
             return;
         }
         // otherwise run the installer
