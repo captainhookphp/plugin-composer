@@ -64,6 +64,28 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function runPostInstallScript(Event $event) : void
     {
+        if (!$this->isCaptainHookInstalled()) {
+            // reload the autoloader to make sure CaptainHook is available
+            $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+            require $vendorDir . '/autoload.php';
+        }
+
+        // if it's still not available end the plugin execution
+        if (!$this->isCaptainHookInstalled()) {
+            $this->io->write('CaptainHook not properly installed try to run composer update');
+            return;
+        }
+        // otherwise run the installer
         ($this->installer)();
+    }
+
+    /**
+     * Checks if CaptainHook is installed properly
+     *
+     * @return bool
+     */
+    private function isCaptainHookInstalled() : bool
+    {
+        return class_exists('\\CaptainHook\\App\\CH');
     }
 }
