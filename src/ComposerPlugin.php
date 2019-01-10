@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CaptainHook\Plugin\Composer;
 
+use CaptainHook\App\Composer\Cmd;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
@@ -23,17 +24,12 @@ use Composer\Script\ScriptEvents;
  *
  * @package CaptainHook\Plugin
  * @author  Andrea Heigl <andreas@heigl.org>
- * @link    https://github.com/captainhookphp/captainhook
+ * @link    https://github.com/captainhookphp/plugin-composer
  */
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
     /**
-     * @var Installer
-     */
-    private $installer;
-
-    /**
-     * Activate the plugin by setting up the installer
+     * Activate the plugin
      *
      * @param  \Composer\Composer       $composer
      * @param  \Composer\IO\IOInterface $io
@@ -41,7 +37,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io) : void
     {
-        $this->installer = new Installer($io, $composer->getPackage());
+        // nothing to do here
     }
 
     /**
@@ -61,6 +57,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @param  \Composer\Script\Event $event
      * @return void
+     * @throws \Exception
      */
     public function installHooks(Event $event) : void
     {
@@ -71,13 +68,21 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             require $vendorDir . '/autoload.php';
         }
 
-        // if it's still not available end the plugin execution
         if (!$this->isCaptainHookInstalled()) {
-            $event->getIO()->write('  <info>CaptainHook not properly installed try to run composer update</info>');
+            // if CaptainHook is still not available end the plugin execution
+            // normally this only happens if CaptainHook gets uninstalled
+            $event->getIO()->write(
+                '  <info>CaptainHook not properly installed try to run composer update</info>' . PHP_EOL .
+                PHP_EOL .
+                'If you are uninstalling CaptainHook, we are sad seeing you go, ' .
+                'but we would appreciate your feedback on your experience.' . PHP_EOL .
+                'Just go to https://github.com/CaptainHookPhp/captainhook/issues to leave your feedback' . PHP_EOL .
+                PHP_EOL .
+                '<comment>WARNING: Don\'t forget to deactivate the hooks in your .git/hooks directory.</comment>'
+            );
             return;
         }
-        // otherwise run the installer
-        ($this->installer)();
+        Cmd::setup($event);
     }
 
     /**
