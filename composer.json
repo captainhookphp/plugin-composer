@@ -13,8 +13,6 @@
       "email": "sf@sebastian-feldmann.info"
     }
   ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require": {
     "php": "^7.1",
     "composer-plugin-api": "^1.1",
@@ -26,7 +24,7 @@
   "extra": {
     "class": "CaptainHook\\Plugin\\Composer\\ComposerPlugin",
     "branch-alias": {
-      "dev-fluffy_hedgehog": "4.0.x-dev"
+      "dev-fluffy_hedgehog": "5.0.x-dev"
     }
   },
   "config": {
