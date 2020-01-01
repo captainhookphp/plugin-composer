@@ -100,10 +100,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function installHooks(Event $event): void
     {
-        $this->io->write('CaptainHook Composer Plugin');
+        $this->io->write('<info>CaptainHook Composer Plugin</info>');
 
         if ($this->isPluginDisabled()) {
-            $this->io->write('<info>plugin is disabled</info>');
+            $this->io->write('  <comment>plugin is disabled</comment>');
             return;
         }
 
@@ -113,7 +113,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
         if (!file_exists($this->executable)) {
             $this->io->write(
-                '<info>CaptainHook executable not found</info>' . PHP_EOL .
+                '<comment>CaptainHook executable not found</comment>' . PHP_EOL .
                 PHP_EOL .
                 'Make sure you have installed the captainhook/captainhook package.' . PHP_EOL .
                 'If you are using the PHAR you have to configure the path to your CaptainHook executable' . PHP_EOL .
@@ -121,15 +121,15 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 PHP_EOL . '<comment>' .
                 '    "extra": {' . PHP_EOL .
                 '        "captainhook": {' . PHP_EOL .
-                '            "exec": "tools/captainhook' . PHP_EOL .
+                '            "exec": "tools/captainhook.phar' . PHP_EOL .
                 '        }' . PHP_EOL .
                 '    }' . PHP_EOL .
                 '</comment>' . PHP_EOL .
                 'If you are uninstalling CaptainHook, we are sad seeing you go, ' .
                 'but we would appreciate your feedback on your experience.' . PHP_EOL .
                 'Just go to https://github.com/CaptainHookPhp/captainhook/issues to leave your feedback' . PHP_EOL .
-                PHP_EOL .
-                '<comment>WARNING: Don\'t forget to deactivate the hooks in your .git/hooks directory.</comment>'
+                '<comment>WARNING: Don\'t forget to deactivate the hooks in your .git/hooks directory.</comment>' .
+                PHP_EOL
             );
             return;
         }
@@ -144,7 +144,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     private function configure(): void
     {
         if (file_exists($this->configuration)) {
-            $this->io->write(('<info>Using CaptainHook config: ' . $this->configuration . '</info>'));
+            $this->io->write(('  <comment>Using CaptainHook config: ' . $this->configuration . '</comment>'));
             return;
         }
 
