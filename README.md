@@ -1,6 +1,6 @@
 # Composer-Plugin for [CaptainHook](https://github.com/captainhookphp/captainhook)
 
-This is a composer-plugin that installs _CaptainHook_ and the corresponding git hooks. For more information visit its [Website](https://github.com/captainhookphp/captainhook).
+This is a composer-plugin that makes sure your team mates install the git hooks. For more information visit its [Website](https://github.com/captainhookphp/captainhook).
 
 [![Latest Stable Version](https://poser.pugx.org/captainhook/plugin-composer/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/plugin-composer)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
@@ -19,23 +19,20 @@ Everything else will happen automagically.
 
 ## Customize
 
-You can set a custom name for your hook configuration and a custom path to your .git directory
-if it is not located in the same directory as your *composer.json* file.
-Just add these values to your *composer.json* in the *extra* section first.
+You can set a custom name for your hook configuration.
+If you want to use the PHAR release of `CaptainHook` you can configure the path the executable.
 ```json
 {
   "extra": {
-    "captainhook-config": "hooks.json",
-    "captainhook-git-dir": "../.git"
-  }
-  
+    "captainhook": {
+      "config": "hooks.json",
+      "exec": "tools/captainhook.phar",
+      "disable-plugin": false
+    }    
+  }  
 }
 
 ```
-
-If you want to see the installation in action have a look at this short installation video.
-
-[![Install demo](http://img.youtube.com/vi/agwTZ0jhDDs/0.jpg)](https://www.youtube.com/watch?v=agwTZ0jhDDs)
 
 ## A word of warning
 
