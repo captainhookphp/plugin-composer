@@ -20,7 +20,10 @@ Everything else will happen automagically.
 ## Customize
 
 You can set a custom name for your hook configuration.
-If you want to use the PHAR release of `CaptainHook` you can configure the path the executable.
+If you want to use the PHAR release of `CaptainHook` you can configure the path to the PHAR file.
+All extra config settings are optional and if you are using the default settings you do not have to 
+configure anything to make it work.
+ 
 ```json
 {
   "extra": {
