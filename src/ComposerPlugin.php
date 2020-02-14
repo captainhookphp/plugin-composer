@@ -172,7 +172,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
         // captainhook config and repository settings
         $configuration  = ' -c ' . $this->configuration;
-        $repository     = ' -g ' . $this->gitDirectory;
+        $repository     = $command === self::COMMAND_INSTALL ? ' -g ' . $this->gitDirectory : '';
         $skip           = $command === self::COMMAND_INSTALL ? ' -s' : '';
 
         // sub process settings
