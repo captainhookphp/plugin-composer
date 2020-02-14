@@ -87,7 +87,8 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ScriptEvents::POST_AUTOLOAD_DUMP => 'installHooks'
+            ScriptEvents::POST_INSTALL_CMD => 'installHooks',
+            ScriptEvents::POST_UPDATE_CMD  => 'installHooks'
          ];
     }
 
