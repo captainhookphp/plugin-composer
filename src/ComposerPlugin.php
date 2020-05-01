@@ -177,7 +177,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $skip           = $command === self::COMMAND_INSTALL ? ' -s' : '';
         $executable     = str_replace(' ', '\\ ', $this->executable);
 
-            // sub process settings
+        // sub process settings
         $cmd   = $executable . ' ' . $command . $ansi . $interaction . $skip . $configuration . $repository;
         $pipes = [];
         $spec  = [
@@ -202,7 +202,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $exitCode = $status['exitcode'] ?? -1;
         proc_close($process);
         if ($exitCode !== 0) {
-            throw new RuntimeException($this->pluginErrorMessage('invalid-exit-code'));
+            $this->io->writeError($this->pluginErrorMessage('installation process failed'));
         }
     }
 
