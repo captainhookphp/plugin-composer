@@ -233,6 +233,12 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 $this->gitDirectory = $possibleGitDir;
                 return;
             }
+
+            // if we checked the root directory already, break to prevent endless loop
+            if ($path === dirname($path)) {
+                break;
+            }
+
             $path = \dirname($path);
         }
         throw new RuntimeException($this->pluginErrorMessage('git directory not found'));
