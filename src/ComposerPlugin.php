@@ -11,13 +11,32 @@ declare(strict_types=1);
 
 namespace CaptainHook\Plugin\Composer;
 
+use CaptainHook\Plugin\Composer\Asset\Service\ConvertGithubReleaseListService;
+use CaptainHook\Plugin\Composer\Asset\Service\GithubService;
+use CaptainHook\Plugin\Composer\Asset\Service\VersionService;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\Installer\PackageEvent;
+use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use Composer\Semver\Comparator;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\StreamHandler;
 use RuntimeException;
+use function chmod;
+use function dirname;
+use function file_exists;
+use function fputcsv;
+use function fputs;
+use function fread;
+use function is_writeable;
+use function mkdir;
+use function stream_context_create;
+use function stream_context_set_option;
+use const PHP_EOL;
 
 /**
  * Class ComposerPlugin
@@ -87,8 +106,18 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ScriptEvents::POST_INSTALL_CMD => 'installHooks',
-            ScriptEvents::POST_UPDATE_CMD  => 'installHooks'
+            ScriptEvents::POST_INSTALL_CMD => [
+                'installCaptn',
+                'installHooks',
+            ],
+            ScriptEvents::POST_UPDATE_CMD  => [
+                'installCaptn',
+                'installHooks',
+            ],
+            PackageEvents::POST_PACKAGE_UNINSTALL => [
+                'uninstallHooks',
+                'uninstallCaptn'
+            ]
          ];
     }
 
@@ -139,7 +168,53 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->install();
     }
 
+    public function installCaptn(Event $event): void
+    {
+        $this->detectCaptainExecutable();
+
+        if ($this->canNotCreateExecutable()) {
+            $this->io->write(sprintf(
+                '<comment>CaptainHook executable at "%s" can not be updated!</comment>' . PHP_EOL .
+                PHP_EOL .
+                'Make sure to update The Cap\'n manually to the latest version' . PHP_EOL,
+                $this->executable
+            ));
+            return;
+        }
+
+        $context = stream_context_create();
+
+        $service = new GithubService($context, new VersionService(), new ConvertGithubReleaseListService());
+        $url = $service('CaptainHookPhp', 'captainhook', 'captainhook.phar', '^5.0');
+
+        if (Comparator::greaterThan($this->getCurrentCaptainVersion(), $url['version'])) {
+            return;
+        }
+
+        stream_context_set_option($context, 'http', 'method', 'GET');
+        $target = fopen($this->executable, 'w+');
+        $source = fopen((string) $url['url'], 'r', false, $context);
+        while (! feof($source)) {
+            fputs($target, fread($source, 1024));
+        }
+        fclose($target);
+        fclose($source);
+        chmod($this->executable, 0755);
+        // Possibly add a signature-check here as well!
+    }
+
+    public function uninstallCaptn(PackageEvent $event): void
+    {
+        unlink($this->executable);
+    }
+
+    public function uninstallHooks(PackageEvent $event): void
+    {
+        var_dump('foo');
+    }
+
     /**
+     *
      * Create captainhook.json file if it does not exist
      */
     private function configure(): void
@@ -262,7 +337,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $extra = $this->composer->getPackage()->getExtra();
         if (isset($extra['captainhook']['exec'])) {
-            $this->executable = $extra['captainhook']['exec'];
+            $this->executable = (string) $extra['captainhook']['exec'];
             return;
         }
 
@@ -278,5 +353,22 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $extra = $this->composer->getPackage()->getExtra();
         return (bool) ($extra['captainhook']['disable-plugin'] ?? false);
+    }
+
+    private function canNotCreateExecutable()
+    {
+        if (! file_exists(dirname($this->executable))) {
+            mkdir(dirname($this->executable), 0777, true);
+        }
+        return ! is_writeable(dirname($this->executable));
+    }
+
+    private function getCurrentCaptainVersion(): string
+    {
+        if (! preg_match('/ \d+\.\d+\.\d+ /', 'foob', $result)) {
+            return '1.0.0';
+        };
+
+        return $result[1];
     }
 }
