@@ -16,7 +16,6 @@
   "require": {
     "php": "^7.1",
     "composer-plugin-api": "^1.1|^2.0",
-    "org_heigl/trait-iterator": "^1.1",
     "captainhook/captainhook": "^5.0"
   },
   "require-dev": {
