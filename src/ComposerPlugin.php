@@ -137,6 +137,11 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             $this->io->write('  <comment>plugin is disabled</comment>');
             return;
         }
+        
+        if (getenv('CI') === 'true') {
+            $this->io->write(' <comment>disabling plugin due to CI-environment</comment>');
+            return;
+        }
 
         $this->detectConfiguration();
         $this->detectGitDir();
