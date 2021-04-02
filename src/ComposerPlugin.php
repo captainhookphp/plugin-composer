@@ -210,7 +210,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $configuration  = ' -c ' . escapeshellarg($this->configuration);
         $repository     = $command === self::COMMAND_INSTALL ? ' -g ' . escapeshellarg($this->gitDirectory) : '';
         $skip           = $command === self::COMMAND_INSTALL ? ' -s' : '';
-        $executable     = str_replace(' ', '\\ ', $this->executable);
+        $executable     = escapeshellarg($this->executable);
 
         // sub process settings
         $cmd   = $executable . ' ' . $command . $ansi . $interaction . $skip . $configuration . $repository;
