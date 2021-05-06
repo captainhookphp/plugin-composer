@@ -137,7 +137,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             $this->io->write('  <comment>plugin is disabled</comment>');
             return;
         }
-        
+
         if (getenv('CI') === 'true') {
             $this->io->write(' <comment>disabling plugin due to CI-environment</comment>');
             return;
@@ -205,15 +205,20 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         // Respect composer CLI settings
         $ansi        = $this->io->isDecorated() ? ' --ansi' : ' --no-ansi';
         $interaction = $this->io->isInteractive() ? '' : ' --no-interaction';
+        $executable  = escapeshellarg($this->executable);
 
         // captainhook config and repository settings
         $configuration  = ' -c ' . escapeshellarg($this->configuration);
-        $repository     = $command === self::COMMAND_INSTALL ? ' -g ' . escapeshellarg($this->gitDirectory) : '';
-        $skip           = $command === self::COMMAND_INSTALL ? ' -s' : '';
-        $executable     = escapeshellarg($this->executable);
+        $repository     = '';
+        $forceOrSkip    = '';
+
+        if ($command === self::COMMAND_INSTALL) {
+            $repository  = ' -g ' . escapeshellarg($this->gitDirectory);
+            $forceOrSkip = $this->isForceInstall() ? ' -f' : ' -s';
+        }
 
         // sub process settings
-        $cmd   = $executable . ' ' . $command . $ansi . $interaction . $skip . $configuration . $repository;
+        $cmd   = $executable . ' ' . $command . $ansi . $interaction . $forceOrSkip . $configuration . $repository;
         $pipes = [];
         $spec  = [
             0 => ['file', 'php://stdin', 'r'],
@@ -313,5 +318,16 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $extra = $this->composer->getPackage()->getExtra();
         return (bool) ($extra['captainhook']['disable-plugin'] ?? false);
+    }
+
+    /**
+     * Is a force installation configured
+     *
+     * @return bool
+     */
+    private function isForceInstall(): bool
+    {
+        $extra = $this->composer->getPackage()->getExtra();
+        return (bool) ($extra['captainhook']['force-install'] ?? false);
     }
 }
