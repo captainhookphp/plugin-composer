@@ -218,7 +218,9 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         // sub process settings
-        $cmd   = $executable . ' ' . $command . $ansi . $interaction . $forceOrSkip . $configuration . $repository;
+        $cmd   = PHP_BINARY . ' '  . $executable . ' ' . $command
+               . $ansi . $interaction . $forceOrSkip
+               . $configuration . $repository;
         $pipes = [];
         $spec  = [
             0 => ['file', 'php://stdin', 'r'],
