@@ -67,6 +67,11 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     private $gitDirectory;
 
     /**
+     * @var bool
+     */
+    private $isWorktree = false;
+
+    /**
      * Activate the plugin
      *
      * @param  \Composer\Composer       $composer
@@ -145,6 +150,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
         $this->detectConfiguration();
         $this->detectGitDir();
+        if ($this->isWorktree) {
+            $this->io->write('   <comment>ARRRRR! We ARRR in a worktree, no install attempted</comment>');
+            return;
+        }
         $this->detectCaptainExecutable();
 
         if (!file_exists($this->executable)) {
@@ -274,6 +283,15 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             if (is_dir($possibleGitDir)) {
                 $this->gitDirectory = $possibleGitDir;
                 return;
+            } elseif (is_file($possibleGitDir)) {
+                $gitfile = file($possibleGitDir);
+                $match = [];
+                preg_match('#^gitdir: (?<gitdir>[a-zA-Z/\.]*\.git)#', $gitfile[0] ?? '', $match);
+                $dir = $match['gitdir'] ?? '';
+                if (is_dir($dir)) {
+                    $this->isWorktree = true;
+                }
+
             }
 
             // if we checked the root directory already, break to prevent endless loop
@@ -282,6 +300,9 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             }
 
             $path = \dirname($path);
+        }
+        if ($this->isWorktree) {
+            return;
         }
         throw new RuntimeException($this->pluginErrorMessage('git directory not found'));
     }
