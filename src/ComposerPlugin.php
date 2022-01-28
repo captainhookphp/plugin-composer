@@ -340,7 +340,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     private function isPluginDisabled(): bool
     {
         $extra = $this->composer->getPackage()->getExtra();
-        return (bool) ($extra['captainhook']['disable-plugin'] ?? false);
+        return ($extra['captainhook']['disable-plugin'] ?? false) || getenv('CAPTAINHOOK_DISABLE') === 'true';
     }
 
     /**
@@ -351,6 +351,6 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     private function isForceInstall(): bool
     {
         $extra = $this->composer->getPackage()->getExtra();
-        return (bool) ($extra['captainhook']['force-install'] ?? false);
+        return ($extra['captainhook']['force-install'] ?? false) || getenv('CAPTAINHOOK_FORCE_INSTALL') === 'true';
     }
 }
