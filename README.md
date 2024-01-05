@@ -2,7 +2,7 @@
 
 ## ⚠️ This package is deprecated ⚠️
 
-Please use the [hook-installer](https://github.com/captainhookphp/hook-instller) package instead.
+Please use the [hook-installer](https://github.com/captainhookphp/hook-installer) package instead.
 The only difference to this package is that it does NOT require `CaptainHook` by itself.
 That gives you the opportunity to choose your installation method. You can either install the
 PHAR or the source code version with all its dependencies.
